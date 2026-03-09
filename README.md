@@ -11,19 +11,23 @@ A minimal, opinionated template for publishing Node.js libraries written in Type
 - **Linting** with [oxlint](https://oxc.rs/docs/guide/usage/linter)
 - **Formatting** with [oxfmt](https://github.com/nicolo-ribaudo/oxfmt)
 - **Type declarations** and source maps included in the build output
+- **API documentation** generation with [TypeDoc](https://typedoc.org) and TSDoc comments
+- **CI/CD** via GitHub Actions: automated checks on PRs and tag-triggered npm publishing with SLSA provenance
 
 ## Getting Started
 
 1. Click **Use this template** on GitHub to create a new repository.
 2. Clone your new repo and install dependencies:
 
-```sh
-npm install
-```
+   ```sh
+   npm install
+   ```
 
 3. Replace the contents of [src/index.ts](src/index.ts) with your library code.
 4. Update `name`, `version`, and `description` in [package.json](package.json).
 5. Update the `exports` field in [package.json](package.json) if you need multiple entry points.
+6. Update the comparison links at the bottom of [CHANGELOG.md](CHANGELOG.md) to point to your repository.
+7. Add an `NPM_TOKEN` secret to your GitHub repository settings for automated publishing.
 
 ## Project Structure
 
