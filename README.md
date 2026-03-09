@@ -27,7 +27,6 @@ A minimal, opinionated template for publishing Node.js libraries written in Type
 4. Update `name`, `version`, and `description` in [package.json](package.json).
 5. Update the `exports` field in [package.json](package.json) if you need multiple entry points.
 6. Update the comparison links at the bottom of [CHANGELOG.md](CHANGELOG.md) to point to your repository.
-7. Add an `NPM_TOKEN` secret to your GitHub repository settings for automated publishing.
 
 ## Project Structure
 
@@ -67,7 +66,34 @@ This will:
 3. Clean `dist/`
 4. Build
 
-Only the `dist/` folder and `README.md` are included in the published package (see `files` in [package.json](package.json)).
+Only the `dist/`, `README.md`, and `CHANGELOG.md` are included in the published package (see `files` in [package.json](package.json)).
+
+## GitHub Actions
+
+### CI (`ci.yml`)
+
+Runs on every pull request and push to `main`:
+
+1. Typecheck
+2. Lint
+3. Test
+4. Build
+
+### Publish (`publish.yml`)
+
+Runs when a version tag is pushed (e.g. `v1.2.3`):
+
+1. Runs `prepublishOnly` (typecheck → lint → clean → build)
+2. Publishes to npm with [SLSA provenance attestation](https://docs.npmjs.com/generating-provenance-statements)
+
+**Required setup:** add an `NPM_TOKEN` secret to your repository under **Settings → Secrets and variables → Actions**.
+
+To publish a new version:
+
+```sh
+npm version patch  # or minor / major
+git push --follow-tags
+```
 
 ## Requirements
 
