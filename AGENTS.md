@@ -655,53 +655,25 @@ Check that:
 
 ### Updating the Changelog
 
-`CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com) format. Update it as part of every release — before running `npm version`.
+`CHANGELOG.md` is generated automatically by [git-cliff](https://git-cliff.org) from Conventional Commits. The configuration is in `cliff.toml`.
 
-**For every merged feature/fix**, add an entry under `[Unreleased]` in the appropriate section:
+**Do not edit `CHANGELOG.md` by hand.** Run `npm run changelog` instead — it reads the commit history since the last tag, determines the next version, and rewrites `CHANGELOG.md` in Keep a Changelog format.
 
-- `Added` — new exported functions, classes, or options (`feat:`)
-- `Changed` — behaviour changes, renames, refactors (`refactor:`, `docs:`, `chore:`)
-- `Fixed` — bug fixes (`fix:`)
-- `Removed` — deleted or deprecated public API (`feat!:` / `BREAKING CHANGE:`)
-
-**At release time**, convert `[Unreleased]` into a versioned section and reset `[Unreleased]` to empty:
-
-```markdown
-## [Unreleased]
-
-### Added
-
-### Changed
-
-### Fixed
-
-### Removed
-
----
-
-## [1.1.0] - 2026-03-09
-
-### Added
-
-- `parseRange` function for parsing numeric ranges
+```sh
+npm run changelog   # regenerates CHANGELOG.md with the next version
 ```
 
-Then update the comparison links at the bottom of the file:
-
-```markdown
-[Unreleased]: https://github.com/owner/repo/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/owner/repo/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/owner/repo/releases/tag/v1.0.0
-```
+Review the output before committing. If commits in `[Unreleased]` were mislabelled, fix the commit messages first (via `git rebase -i`) before running `npm run changelog`.
 
 ### Publish Checklist
 
-- [ ] CHANGELOG or release notes updated
-- [ ] Version bumped with `npm version`
-- [ ] `npm pack --dry-run` output reviewed
 - [ ] All tests pass (`npm test`)
+- [ ] `npm run changelog` — regenerates `CHANGELOG.md`; review the output
+- [ ] `git add CHANGELOG.md && git commit -m "chore: release vX.Y.Z"` (use the version printed by git-cliff)
+- [ ] `npm version patch` (or `minor` / `major` — must match the version git-cliff determined)
+- [ ] `npm pack --dry-run` — verify published contents
 - [ ] No uncommitted changes (`git status` is clean)
-- [ ] `git push && git push --tags` — the `publish` workflow triggers automatically on the version tag
+- [ ] `git push --follow-tags` — the `publish` workflow triggers automatically on the version tag
 
 ---
 
@@ -733,8 +705,8 @@ Quick-reference checklist. Full rules for each step are in the sections above.
 ### Release (on `main` after merge)
 
 - [ ] `git checkout main && git pull`
-- [ ] **Update `CHANGELOG.md`** — move all entries from `[Unreleased]` into a new versioned section; update the comparison links at the bottom (→ [Updating the Changelog](#updating-the-changelog))
-- [ ] `git add CHANGELOG.md && git commit -m "chore: update changelog for vX.Y.Z"`
-- [ ] `npm version patch` (or `minor` / `major` — → [Version Bumping](#version-bumping))
+- [ ] `npm run changelog` — regenerates `CHANGELOG.md` from commits; review the output (→ [Updating the Changelog](#updating-the-changelog))
+- [ ] `git add CHANGELOG.md && git commit -m "chore: release vX.Y.Z"` (use the version printed by git-cliff)
+- [ ] `npm version patch` (or `minor` / `major` — must match the version git-cliff determined)
 - [ ] `npm pack --dry-run` — verify published contents (→ [Verifying Package Contents](#verifying-package-contents))
-- [ ] `git push && git push --tags` — the `publish` workflow triggers automatically; do not run `npm publish` manually
+- [ ] `git push --follow-tags` — the `publish` workflow triggers automatically; do not run `npm publish` manually

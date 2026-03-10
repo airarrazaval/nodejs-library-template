@@ -53,6 +53,7 @@ tsconfig.build.json    # TypeScript config for compilation
 | `npm run format:check` | Check formatting without modifying files |
 | `npm run clean` | Remove `dist/` and `docs/` |
 | `npm run docs` | Generate API documentation in `docs/` |
+| `npm run changelog` | Regenerate `CHANGELOG.md` from commits (used before releasing) |
 
 ## Publishing
 
@@ -93,7 +94,16 @@ Runs when a version tag is pushed (e.g. `v1.2.3`):
 To publish a new version:
 
 ```sh
+# 1. Regenerate CHANGELOG.md from commits (determines next version automatically)
+npm run changelog
+
+# 2. Review CHANGELOG.md, then commit
+git add CHANGELOG.md && git commit -m "chore: release vX.Y.Z"
+
+# 3. Bump version to match what git-cliff determined
 npm version patch  # or minor / major
+
+# 4. Push commit and tag — publish workflow triggers automatically
 git push --follow-tags
 ```
 
