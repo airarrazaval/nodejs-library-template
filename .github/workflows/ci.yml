@@ -23,6 +23,8 @@ jobs:
 
       - run: npm audit signatures
 
+      - run: npm audit --omit=dev
+
       - run: npm run typecheck
 
       - run: npm run lint
