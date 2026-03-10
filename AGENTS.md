@@ -57,6 +57,7 @@ Only proceed once requirements are unambiguous.
 ## Commands
 
 ```sh
+npm run dev            # run tests in watch mode (use during development)
 npm run build          # compile src/ → dist/
 npm run typecheck      # type-check without emitting
 npm test               # run tests
@@ -67,6 +68,7 @@ npm run format         # format all files
 npm run format:check   # check formatting
 npm run docs           # generate API docs → docs/
 npm run clean          # remove dist/ and docs/
+npm run changelog      # regenerate CHANGELOG.md from commits (run before releasing)
 ```
 
 Always run `npm run typecheck && npm run lint` after making changes.
@@ -579,12 +581,15 @@ Two workflows are defined in `.github/workflows/`.
 
 Runs on every pull request targeting `main` and on every push to `main`.
 
-| Step       | Command             |
-| ---------- | ------------------- |
-| Type-check | `npm run typecheck` |
-| Lint       | `npm run lint`      |
-| Test       | `npm test`          |
-| Build      | `npm run build`     |
+| Step                     | Command                      |
+| ------------------------ | ---------------------------- |
+| Verify signatures        | `npm audit signatures`       |
+| Audit prod dependencies  | `npm audit --omit=dev`       |
+| Type-check               | `npm run typecheck`          |
+| Lint                     | `npm run lint`               |
+| Format check             | `npm run format:check`       |
+| Test                     | `npm test`                   |
+| Build                    | `npm run build`              |
 
 All steps must pass for the PR to be mergeable. Configure `main` as a protected branch in GitHub (Settings → Branches) and require this workflow as a status check.
 
@@ -641,7 +646,7 @@ npm version patch   # or minor / major
 Only files listed in `"files"` in `package.json` are published:
 
 ```json
-"files": ["dist", "README.md", "CHANGELOG.md"]
+"files": ["dist", "README.md", "CHANGELOG.md", "LICENSE"]
 ```
 
 Verify before publishing:
