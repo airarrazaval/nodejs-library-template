@@ -581,15 +581,15 @@ Two workflows are defined in `.github/workflows/`.
 
 Runs on every pull request targeting `main` and on every push to `main`.
 
-| Step                     | Command                      |
-| ------------------------ | ---------------------------- |
-| Verify signatures        | `npm audit signatures`       |
-| Audit prod dependencies  | `npm audit --omit=dev`       |
-| Type-check               | `npm run typecheck`          |
-| Lint                     | `npm run lint`               |
-| Format check             | `npm run format:check`       |
-| Test                     | `npm test`                   |
-| Build                    | `npm run build`              |
+| Step                    | Command                |
+| ----------------------- | ---------------------- |
+| Verify signatures       | `npm audit signatures` |
+| Audit prod dependencies | `npm audit --omit=dev` |
+| Type-check              | `npm run typecheck`    |
+| Lint                    | `npm run lint`         |
+| Format check            | `npm run format:check` |
+| Test                    | `npm test`             |
+| Build                   | `npm run build`        |
 
 All steps must pass for the PR to be mergeable. Configure `main` as a protected branch in GitHub (Settings → Branches) and require this workflow as a status check.
 

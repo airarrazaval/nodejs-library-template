@@ -7,5 +7,16 @@
   "singleQuote": true,
   "trailingComma": "all",
   "insertFinalNewline": true,
-  "ignorePatterns": ["dist/**", "node_modules/**", "coverage/**", ".claude/**"]
+  "ignorePatterns": [
+    "dist/**",
+    "node_modules/**",
+    "coverage/**",
+    "CHANGELOG.md",
+    "package-lock.json",
+    ".claude/**",
+    ".gemini/**",
+    ".aider*",
+    ".cursor/**",
+    ".copilot/**"
+  ]
 }
