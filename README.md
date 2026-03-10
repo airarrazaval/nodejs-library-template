@@ -12,6 +12,7 @@ A minimal, opinionated template for publishing Node.js libraries written in Type
 - **Formatting** with [oxfmt](https://github.com/nicolo-ribaudo/oxfmt)
 - **Type declarations** and source maps included in the build output
 - **API documentation** generation with [TypeDoc](https://typedoc.org) and TSDoc comments
+- **Changelog** generation from [Conventional Commits](https://www.conventionalcommits.org) via [git-cliff](https://git-cliff.org)
 - **CI/CD** via GitHub Actions: automated checks on PRs and tag-triggered npm publishing with SLSA provenance
 
 ## Getting Started
@@ -26,16 +27,30 @@ A minimal, opinionated template for publishing Node.js libraries written in Type
 3. Replace the contents of [src/index.ts](src/index.ts) with your library code.
 4. Update `name`, `version`, and `description` in [package.json](package.json).
 5. Update the `exports` field in [package.json](package.json) if you need multiple entry points.
-6. Update the comparison links at the bottom of [CHANGELOG.md](CHANGELOG.md) to point to your repository.
+6. Add an `NPM_TOKEN` secret to your repository under **Settings → Secrets and variables → Actions**.
 
 ## Project Structure
 
-```
+```text
 src/           # Library source code
 tests/         # Test files (*.test.ts)
 dist/          # Compiled output (generated, not committed)
 tsconfig.json          # TypeScript config for type-checking
 tsconfig.build.json    # TypeScript config for compilation
+```
+
+## Development
+
+Start the test watcher while you write code:
+
+```sh
+npm run dev
+```
+
+Before opening a pull request, verify everything passes:
+
+```sh
+npm run typecheck && npm run lint && npm run format:check && npm test
 ```
 
 ## Scripts
@@ -55,58 +70,46 @@ tsconfig.build.json    # TypeScript config for compilation
 | `npm run docs`          | Generate API documentation in `docs/`                          |
 | `npm run changelog`     | Regenerate `CHANGELOG.md` from commits (used before releasing) |
 
-## Publishing
-
-Before publishing, the `prepublishOnly` script runs automatically:
-
-```sh
-npm publish
-```
-
-This will:
-
-1. Type-check
-2. Lint
-3. Clean `dist/`
-4. Build
-
-Only `dist/`, `README.md`, `CHANGELOG.md`, and `LICENSE` are included in the published package (see `files` in [package.json](package.json)).
-
 ## GitHub Actions
 
 ### CI (`ci.yml`)
 
 Runs on every pull request and push to `main`:
 
-1. Typecheck
-2. Lint
-3. Test
-4. Build
+1. Verify package signatures (`npm audit signatures`)
+2. Audit production dependencies for vulnerabilities (`npm audit --omit=dev`)
+3. Typecheck
+4. Lint
+5. Format check
+6. Test
+7. Build
 
 ### Publish (`publish.yml`)
 
-Runs when a version tag is pushed (e.g. `v1.2.3`):
+Runs automatically when a version tag (e.g. `v1.2.3`) is pushed. Runs `prepublishOnly`
+(typecheck → lint → clean → build) then publishes to npm with
+[SLSA provenance attestation](https://docs.npmjs.com/generating-provenance-statements).
 
-1. Runs `prepublishOnly` (typecheck → lint → clean → build)
-2. Publishes to npm with [SLSA provenance attestation](https://docs.npmjs.com/generating-provenance-statements)
+**Do not run `npm publish` manually.** Use the release flow below instead.
 
-**Required setup:** add an `NPM_TOKEN` secret to your repository under **Settings → Secrets and variables → Actions**.
-
-To publish a new version:
+## Releasing
 
 ```sh
-# 1. Regenerate CHANGELOG.md from commits (determines next version automatically)
+# 1. Regenerate CHANGELOG.md from commits (auto-determines next version)
 npm run changelog
 
-# 2. Review CHANGELOG.md, then commit
+# 2. Review CHANGELOG.md, update comparison links at the bottom, then commit
 git add CHANGELOG.md && git commit -m "chore: release vX.Y.Z"
 
-# 3. Bump version to match what git-cliff determined
+# 3. Bump version in package.json to match what git-cliff determined
 npm version patch  # or minor / major
 
-# 4. Push commit and tag — publish workflow triggers automatically
+# 4. Push — the publish workflow triggers automatically on the version tag
 git push --follow-tags
 ```
+
+Only `dist/`, `README.md`, `CHANGELOG.md`, and `LICENSE` are included in the published
+package (see `files` in [package.json](package.json)).
 
 ## Requirements
 
