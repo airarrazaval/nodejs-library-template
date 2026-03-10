@@ -40,20 +40,20 @@ tsconfig.build.json    # TypeScript config for compilation
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Run tests in watch mode |
-| `npm run build` | Compile TypeScript to `dist/` |
-| `npm test` | Run tests |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run typecheck` | Type-check without emitting files |
-| `npm run lint` | Lint source and tests |
-| `npm run lint:fix` | Lint and auto-fix issues |
-| `npm run format` | Format all files |
-| `npm run format:check` | Check formatting without modifying files |
-| `npm run clean` | Remove `dist/` and `docs/` |
-| `npm run docs` | Generate API documentation in `docs/` |
-| `npm run changelog` | Regenerate `CHANGELOG.md` from commits (used before releasing) |
+| Command                 | Description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm run dev`           | Run tests in watch mode                                        |
+| `npm run build`         | Compile TypeScript to `dist/`                                  |
+| `npm test`              | Run tests                                                      |
+| `npm run test:coverage` | Run tests with coverage report                                 |
+| `npm run typecheck`     | Type-check without emitting files                              |
+| `npm run lint`          | Lint source and tests                                          |
+| `npm run lint:fix`      | Lint and auto-fix issues                                       |
+| `npm run format`        | Format all files                                               |
+| `npm run format:check`  | Check formatting without modifying files                       |
+| `npm run clean`         | Remove `dist/` and `docs/`                                     |
+| `npm run docs`          | Generate API documentation in `docs/`                          |
+| `npm run changelog`     | Regenerate `CHANGELOG.md` from commits (used before releasing) |
 
 ## Publishing
 
@@ -64,12 +64,13 @@ npm publish
 ```
 
 This will:
+
 1. Type-check
 2. Lint
 3. Clean `dist/`
 4. Build
 
-Only the `dist/`, `README.md`, and `CHANGELOG.md` are included in the published package (see `files` in [package.json](package.json)).
+Only `dist/`, `README.md`, `CHANGELOG.md`, and `LICENSE` are included in the published package (see `files` in [package.json](package.json)).
 
 ## GitHub Actions
 

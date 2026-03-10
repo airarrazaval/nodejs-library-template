@@ -16,6 +16,9 @@ tests/index.test.ts   # tests mirror the src/ structure
 tsconfig.json         # type-checking config (covers src/ + tests/, noEmit: true)
 tsconfig.build.json   # build config (src/ only, emits to dist/)
 typedoc.json          # TypeDoc config (generates docs/)
+cliff.toml            # git-cliff config (changelog generation from Conventional Commits)
+.oxlintrc.json        # oxlint rules config
+.oxfmtrc.json         # oxfmt formatting config (printWidth, tabWidth, quotes, etc.)
 dist/                 # compiled output — generated, not committed
 docs/                 # generated API docs — not committed
 ```
@@ -74,13 +77,13 @@ Always run `npm run typecheck && npm run lint` after making changes.
 
 ### Naming
 
-| Symbol | Convention |
-| --- | --- |
-| Classes, interfaces, types, enums | `UpperCamelCase` |
+| Symbol                                                | Convention       |
+| ----------------------------------------------------- | ---------------- |
+| Classes, interfaces, types, enums                     | `UpperCamelCase` |
 | Variables, parameters, functions, methods, properties | `lowerCamelCase` |
-| Global constants, enum values | `CONSTANT_CASE` |
-| Files | `snake_case` |
-| Namespace imports | `lowerCamelCase` |
+| Global constants, enum values                         | `CONSTANT_CASE`  |
+| Files                                                 | `snake_case`     |
+| Namespace imports                                     | `lowerCamelCase` |
 
 - Treat abbreviations as whole words: `loadHttpUrl`, not `loadHTTPURL`
 - Never use `_` as a prefix, suffix, or standalone identifier — exception: prefix unused parameters required by an interface or callback signature with `_` (e.g., `_event: MouseEvent`)
@@ -180,7 +183,7 @@ Document every exported symbol — functions, classes, interfaces, type aliases,
 
 Use `/** ... */` blocks. Single-line `//` comments are for implementation notes and do not appear in generated docs.
 
-```ts
+````ts
 /**
  * Brief one-sentence summary of what this does.
  *
@@ -198,22 +201,22 @@ Use `/** ... */` blocks. Single-line `//` comments are for implementation notes 
  * ```
  */
 export function myFunction(name: string, options?: Options): string { ... }
-```
+````
 
 ### TSDoc Tags Reference
 
-| Tag | Use |
-| --- | --- |
-| `@param name -` | Describe a parameter. The dash after the name is required by TSDoc spec. |
-| `@returns` | Describe the return value. Omit for `void` functions. |
-| `@throws {ErrorType}` | Document thrown errors and when they occur. TypeDoc-compatible syntax. |
-| `@example` | Usage example. Always use a fenced ` ```ts ``` ` block. |
-| `@remarks` | Extended discussion, separate from the summary line. |
-| `@see` | Link to related symbols: `@see {@link OtherFunction}` |
-| `@deprecated` | Mark a symbol as deprecated with a migration note. |
-| `@internal` | Exclude from generated docs (`excludeInternal: true` in `typedoc.json`). |
-| `@alpha` / `@beta` | Mark stability level for unstable APIs. |
-| `@defaultValue` | Document the default value of an optional property. |
+| Tag                   | Use                                                                      |
+| --------------------- | ------------------------------------------------------------------------ |
+| `@param name -`       | Describe a parameter. The dash after the name is required by TSDoc spec. |
+| `@returns`            | Describe the return value. Omit for `void` functions.                    |
+| `@throws {ErrorType}` | Document thrown errors and when they occur. TypeDoc-compatible syntax.   |
+| `@example`            | Usage example. Always use a fenced ` ```ts ``` ` block.                  |
+| `@remarks`            | Extended discussion, separate from the summary line.                     |
+| `@see`                | Link to related symbols: `@see {@link OtherFunction}`                    |
+| `@deprecated`         | Mark a symbol as deprecated with a migration note.                       |
+| `@internal`           | Exclude from generated docs (`excludeInternal: true` in `typedoc.json`). |
+| `@alpha` / `@beta`    | Mark stability level for unstable APIs.                                  |
+| `@defaultValue`       | Document the default value of an optional property.                      |
 
 ### Rules
 
@@ -273,19 +276,19 @@ export function helperUsedByBuild(): void { ... }
 
 Always check for a Node.js built-in before reaching for an external package. This project targets Node >=24, which ships with:
 
-| Need | Built-in |
-| --- | --- |
-| Testing | `node:test`, `node:assert/strict` |
-| File I/O | `node:fs/promises` |
-| Path manipulation | `node:path` |
-| URL parsing | `node:url`, `URL` global |
-| Crypto | `node:crypto` |
-| Streams | `node:stream`, `node:stream/promises` |
-| HTTP client | `fetch` (global) |
-| CLI argument parsing | `node:util` — `parseArgs` |
-| Environment variables | `process.env` |
-| Events | `node:events` |
-| Timers (promise-based) | `node:timers/promises` |
+| Need                   | Built-in                              |
+| ---------------------- | ------------------------------------- |
+| Testing                | `node:test`, `node:assert/strict`     |
+| File I/O               | `node:fs/promises`                    |
+| Path manipulation      | `node:path`                           |
+| URL parsing            | `node:url`, `URL` global              |
+| Crypto                 | `node:crypto`                         |
+| Streams                | `node:stream`, `node:stream/promises` |
+| HTTP client            | `fetch` (global)                      |
+| CLI argument parsing   | `node:util` — `parseArgs`             |
+| Environment variables  | `process.env`                         |
+| Events                 | `node:events`                         |
+| Timers (promise-based) | `node:timers/promises`                |
 
 **Adding a dependency requires explicit justification.** If a built-in covers the use case, use it.
 
@@ -497,14 +500,14 @@ git pull
 git checkout -b feat/my-feature   # use the appropriate prefix
 ```
 
-| Prefix | Use | Commit type |
-| --- | --- | --- |
-| `feat/` | New feature or capability | `feat:` |
-| `fix/` | Bug fix | `fix:` |
-| `chore/` | Dependency updates, tooling, config | `chore:` |
-| `docs/` | Documentation only | `docs:` |
+| Prefix      | Use                                         | Commit type |
+| ----------- | ------------------------------------------- | ----------- |
+| `feat/`     | New feature or capability                   | `feat:`     |
+| `fix/`      | Bug fix                                     | `fix:`      |
+| `chore/`    | Dependency updates, tooling, config         | `chore:`    |
+| `docs/`     | Documentation only                          | `docs:`     |
 | `refactor/` | Code restructuring without behaviour change | `refactor:` |
-| `release/` | Version bump and release preparation | `chore:` |
+| `release/`  | Version bump and release preparation        | `chore:`    |
 
 Branch prefix and commit type should always match.
 
@@ -522,15 +525,15 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org). E
 
 **Types:**
 
-| Type | Use |
-| --- | --- |
-| `feat` | A new feature (triggers minor version bump) |
-| `fix` | A bug fix (triggers patch bump) |
-| `chore` | Tooling, dependencies, config — no production code change |
-| `docs` | Documentation only |
-| `refactor` | Code restructuring without behaviour change |
-| `test` | Adding or updating tests |
-| `build` | Build system or CI changes |
+| Type       | Use                                                       |
+| ---------- | --------------------------------------------------------- |
+| `feat`     | A new feature (triggers minor version bump)               |
+| `fix`      | A bug fix (triggers patch bump)                           |
+| `chore`    | Tooling, dependencies, config — no production code change |
+| `docs`     | Documentation only                                        |
+| `refactor` | Code restructuring without behaviour change               |
+| `test`     | Adding or updating tests                                  |
+| `build`    | Build system or CI changes                                |
 
 **Examples:**
 
@@ -576,12 +579,12 @@ Two workflows are defined in `.github/workflows/`.
 
 Runs on every pull request targeting `main` and on every push to `main`.
 
-| Step | Command |
-| --- | --- |
+| Step       | Command             |
+| ---------- | ------------------- |
 | Type-check | `npm run typecheck` |
-| Lint | `npm run lint` |
-| Test | `npm test` |
-| Build | `npm run build` |
+| Lint       | `npm run lint`      |
+| Test       | `npm test`          |
+| Build      | `npm run build`     |
 
 All steps must pass for the PR to be mergeable. Configure `main` as a protected branch in GitHub (Settings → Branches) and require this workflow as a status check.
 
@@ -621,10 +624,10 @@ Never bypass it with `npm publish --ignore-scripts`.
 
 Follow [Semantic Versioning](https://semver.org). Conventional commit types map directly to version bumps:
 
-| Commit type | Bump |
-| --- | --- |
-| `feat!:` or `BREAKING CHANGE:` footer | Major (`1.0.0` → `2.0.0`) |
-| `feat:` | Minor (`1.0.0` → `1.1.0`) |
+| Commit type                                     | Bump                      |
+| ----------------------------------------------- | ------------------------- |
+| `feat!:` or `BREAKING CHANGE:` footer           | Major (`1.0.0` → `2.0.0`) |
+| `feat:`                                         | Minor (`1.0.0` → `1.1.0`) |
 | `fix:`, `chore:`, `refactor:`, `docs:`, `test:` | Patch (`1.0.0` → `1.0.1`) |
 
 Use `npm version` to update `package.json`, commit, and tag atomically:
@@ -664,6 +667,13 @@ npm run changelog   # regenerates CHANGELOG.md with the next version
 ```
 
 Review the output before committing. If commits in `[Unreleased]` were mislabelled, fix the commit messages first (via `git rebase -i`) before running `npm run changelog`.
+
+> **Note:** Comparison links at the bottom of `CHANGELOG.md` are not auto-generated. After running `npm run changelog`, manually add or update the links in the form:
+>
+> ```markdown
+> [1.1.0]: https://github.com/owner/repo/compare/v1.0.0...v1.1.0
+> [Unreleased]: https://github.com/owner/repo/compare/v1.1.0...HEAD
+> ```
 
 ### Publish Checklist
 

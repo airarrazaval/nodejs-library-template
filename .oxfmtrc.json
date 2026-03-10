@@ -7,10 +7,5 @@
   "singleQuote": true,
   "trailingComma": "all",
   "insertFinalNewline": true,
-  "ignorePatterns": [
-    "dist/**",
-    "node_modules/**",
-    "coverage/**",
-    ".claude/**"
-  ]
+  "ignorePatterns": ["dist/**", "node_modules/**", "coverage/**", ".claude/**"]
 }
