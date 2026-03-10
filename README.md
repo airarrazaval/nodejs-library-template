@@ -42,6 +42,7 @@ tsconfig.build.json    # TypeScript config for compilation
 
 | Command | Description |
 |---|---|
+| `npm run dev` | Run tests in watch mode |
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm test` | Run tests |
 | `npm run test:coverage` | Run tests with coverage report |
@@ -50,7 +51,8 @@ tsconfig.build.json    # TypeScript config for compilation
 | `npm run lint:fix` | Lint and auto-fix issues |
 | `npm run format` | Format all files |
 | `npm run format:check` | Check formatting without modifying files |
-| `npm run clean` | Remove `dist/` |
+| `npm run clean` | Remove `dist/` and `docs/` |
+| `npm run docs` | Generate API documentation in `docs/` |
 
 ## Publishing
 

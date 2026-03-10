@@ -2,10 +2,20 @@
   "name": "nodejs-library-template",
   "version": "0.0.1",
   "description": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airarrazaval/nodejs-library-template.git"
+  },
+  "homepage": "https://github.com/airarrazaval/nodejs-library-template#readme",
+  "bugs": {
+    "url": "https://github.com/airarrazaval/nodejs-library-template/issues"
+  },
   "files": [
     "dist",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "type": "module",
   "sideEffects": false,
