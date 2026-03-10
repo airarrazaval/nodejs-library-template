@@ -557,7 +557,7 @@ The `!` suffix (e.g. `feat!:`) or a `BREAKING CHANGE:` footer marks a breaking c
 
 - Keep PRs small and focused — one feature or fix per PR
 - All checks must pass before merging: `npm run typecheck && npm run lint && npm test`
-- PR description should reference the original requirements and confirm all cases are tested
+- Fill in the pull request template (`.github/pull_request_template.md`): select the type of change, confirm all checklist items, and ensure `CHANGELOG.md` is updated under `[Unreleased]`
 - After creating the PR, stop. Do not merge it. Inform the user and wait for them to review and merge.
 
 ### Tags and Releases
@@ -723,7 +723,11 @@ Quick-reference checklist. Full rules for each step are in the sections above.
 ### Pull Request
 
 - [ ] `git push -u origin feat/my-feature`
-- [ ] Open PR against `main` — description must reference requirements and confirm test coverage
+- [ ] Open PR against `main` and fill in the pull request template:
+  - Select the correct type of change
+  - Confirm tests are added or updated
+  - Confirm `CHANGELOG.md` is updated under `[Unreleased]`
+  - Confirm `npm run typecheck`, `npm run lint`, and `npm test` all pass
 - [ ] **Stop. Inform the user. Wait for them to review and merge.**
 
 ### Release (on `main` after merge)
